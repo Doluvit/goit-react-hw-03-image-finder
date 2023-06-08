@@ -1,0 +1,1 @@
+import { Overlay, ModalWindow } from "./modal.styled";
