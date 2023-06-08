@@ -13,19 +13,37 @@ class App extends Component {
     searchText: '',
     collection: null,
     loading: false,
-    pageNumber: 1,
+    pageNumber: 15,
   };
 
   componentDidUpdate(_, prevState) {
     if (prevState.searchText !== this.state.searchText) {
       getCards(this.state.searchText, this.state.pageNumber)
-        .then(cards => this.setState({ collection: cards.data.hits }))
+        .then(cards => {
+          if (prevState.pageNumber !== this.state.pageNumber) {
+            this.setState(prevState => ({
+              collection: [...prevState.collection, ...cards.data.hits],
+            }));
+          } else {
+            this.setState({
+              collection: [...cards.data.hits],
+            });
+          }
+
+          if (cards.data.hits.length === 0) {
+            return Promise.reject(new Error('Sorry'));
+          }
+        })
         .catch(error => console.log(error.message));
     }
   }
 
   handleSearch = searchText => {
     this.setState({ searchText });
+  };
+
+  onLoadMore = () => {
+    this.setState({ pageNumber: this.state.pageNumber + 1 });
   };
 
   render() {
@@ -35,9 +53,7 @@ class App extends Component {
         {this.state.collection && (
           <ImageGallery props={this.state.collection} />
         )}
-        {this.state.collection && (
-          <Button type="button" onClick={this.getCards} />
-        )}
+        {this.state.collection && <Button onClick={this.onLoadMore} />}
         <ToastContainer autoClose={3000} />
       </MainContainer>
     );
