@@ -13,24 +13,28 @@ class App extends Component {
     searchText: '',
     collection: null,
     loading: false,
-    pageNumber: 15,
+    pageNumber: 1,
   };
 
   componentDidUpdate(_, prevState) {
-    if (prevState.searchText !== this.state.searchText) {
-      getCards(this.state.searchText, this.state.pageNumber)
-        .then(cards => {
-          if (prevState.pageNumber !== this.state.pageNumber) {
+    const { searchText, pageNumber } = this.state;
+    if (
+      prevState.searchText !== searchText ||
+      prevState.pageNumber !== pageNumber
+    ) {
+      getCards(searchText, pageNumber)
+        .then(data => {
+          if (prevState.pageNumber !== pageNumber) {
             this.setState(prevState => ({
-              collection: [...prevState.collection, ...cards.data.hits],
+              collection: [...prevState.collection, ...data.hits],
             }));
           } else {
             this.setState({
-              collection: [...cards.data.hits],
+              collection: [...data.hits],
             });
           }
 
-          if (cards.data.hits.length === 0) {
+          if (data.hits.length === 0) {
             return Promise.reject(new Error('Sorry'));
           }
         })
@@ -43,7 +47,9 @@ class App extends Component {
   };
 
   onLoadMore = () => {
-    this.setState({ pageNumber: this.state.pageNumber + 1 });
+    this.setState(prevState => {
+      return { pageNumber: prevState.pageNumber + 1 };
+    });
   };
 
   render() {
