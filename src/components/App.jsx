@@ -7,6 +7,7 @@ import { MainContainer } from './App.styled';
 import SearchBar from './Searchbar/Searchbar';
 import { getCards } from 'Servises/getCards';
 import { Button } from './Button/Button';
+import { Loader } from './Loader/Loader';
 
 class App extends Component {
   state = {
@@ -22,15 +23,18 @@ class App extends Component {
       prevState.searchText !== searchText ||
       prevState.pageNumber !== pageNumber
     ) {
+      this.setState({ loading: true });
       getCards(searchText, pageNumber)
         .then(data => {
           if (prevState.pageNumber !== pageNumber) {
             this.setState(prevState => ({
               collection: [...prevState.collection, ...data.hits],
+              loading: false,
             }));
           } else {
             this.setState({
               collection: [...data.hits],
+              loading: false,
             });
           }
 
@@ -58,7 +62,8 @@ class App extends Component {
         <SearchBar onSubmit={this.handleSearch} />
         {this.state.collection && (
           <ImageGallery props={this.state.collection} />
-        )}
+          )}
+          <Loader isLoading={this.state.loading}/>
         {this.state.collection && <Button onClick={this.onLoadMore} />}
         <ToastContainer autoClose={3000} />
       </MainContainer>
