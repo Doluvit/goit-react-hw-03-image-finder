@@ -22,18 +22,17 @@ class SearchBar extends Component {
   handleSubmit = event => {
     event.preventDefault();
     if (this.state.value.trim() === '') {
-      toast.error('Please, enter your request!');
+      toast.error('Please, input your request!');
       return;
     }
     this.props.onSubmit(this.state.value);
     this.setState({ value: '' });
-    window.scrollTo(0, 0);
   };
 
   render() {
     return (
       <SearchbarHeader>
-               <SearchForm onSubmit={this.handleSubmit}>
+        <SearchForm onSubmit={this.handleSubmit}>
           <SearchFormButton type="submit">
             <ImSearch />
             <SearchFormButtonLabel></SearchFormButtonLabel>

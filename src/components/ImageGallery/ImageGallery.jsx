@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { ImageGalleryItem } from 'components/ImageGalleryItem/ImageGalleryItem';
 import { ImageGalleryList } from './ImageGallery.styled';
 
@@ -16,4 +17,11 @@ export const ImageGallery = ({ props }) => {
       })}
     </ImageGalleryList>
   );
+};
+
+ImageGallery.propTypes = {
+  webformatURL: PropTypes.string,
+  largeImageURL: PropTypes.string,
+  id: PropTypes.string,
+  tags: PropTypes.string,
 };

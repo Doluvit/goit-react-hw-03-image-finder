@@ -1,49 +1,45 @@
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 import {
   ImageCalleryItemBox,
   ImageGalleryItemImage,
 } from './ImageGalleryItem.styled';
-import { ModalWindow } from 'components/Modal/Modal';
+import { Modal } from 'components/Modal/Modal';
 import { Component } from 'react';
 
 export class ImageGalleryItem extends Component {
-  state = { modalIsOpen: false };
+  static propTypes = {
+    largeImageURL: PropTypes.string.isRequired,
+    webformatURL: PropTypes.string.isRequired,
+    id: PropTypes.string,
+    tags: PropTypes.string.isRequired,
+  };
 
-  openModal = () => {
-   this.setState({modalIsOpen: true})
-  }
-  
-  closeModal = () => {
-    this.setState({modalIsOpen: false})
-  }
+  state = {
+    modalIsOpen: false,
+  };
+
+  toggleModal = () => {
+    this.setState(({ modalIsOpen }) => ({ modalIsOpen: !modalIsOpen, }));
+  };
 
   render() {
     const { webformatURL, largeImageURL, id, tags } = this.props;
     const { modalIsOpen } = this.state;
 
     return (
-      <ImageCalleryItemBox key={id} onClick={this.openModal}>
+      <>
+      <ImageCalleryItemBox key={id} onClick={this.toggleModal}>
         <ImageGalleryItemImage src={webformatURL} alt={tags} />
+      </ImageCalleryItemBox>
         {modalIsOpen && (
-          <ModalWindow
-            openModal={this.openModal}
-            closeModal={this.closeModal}
-            tags={tags}
+          <Modal
+            toggleModal={this.toggleModal}
             largeImageURL={largeImageURL}
+            tags={tags}
           />
         )}
-      </ImageCalleryItemBox>
+        </>
     );
   }
 }
-
-// ImageGalleryItem.propTypes = {
-//   collection: PropTypes.arrayOf(
-//     PropTypes.shape({
-//       id: PropTypes.number,
-//       webformatURL: PropTypes.string,
-//       largeImageURL: PropTypes.string,
-//     })
-//   ),
-// }

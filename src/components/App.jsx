@@ -33,6 +33,7 @@ class App extends Component {
               loading: false,
             }));
           } else {
+             window.scrollTo(0, 0);
             this.setState({
               collection: [...data.hits],
               loading: false,
