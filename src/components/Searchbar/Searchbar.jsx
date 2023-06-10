@@ -1,5 +1,5 @@
-import { toast } from 'react-toastify';
 import { Component } from 'react';
+import { toast } from 'react-toastify';
 import { ImSearch } from 'react-icons/im';
 
 import {

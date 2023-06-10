@@ -6,9 +6,7 @@ import { ImageGallery } from './ImageGallery/ImageGallery';
 import { MainContainer } from './App.styled';
 import SearchBar from './Searchbar/Searchbar';
 import { getCards } from 'Servises/getCards';
-import { Button } from './Button/Button';
 import { Loader } from './Loader/Loader';
-
 
 class App extends Component {
   state = {
@@ -16,6 +14,7 @@ class App extends Component {
     collection: [],
     loading: false,
     pageNumber: 1,
+    query: null,
   };
 
   componentDidUpdate(_, prevState) {
@@ -30,29 +29,44 @@ class App extends Component {
           if (prevState.pageNumber !== pageNumber) {
             this.setState(prevState => ({
               collection: [...prevState.collection, ...data.hits],
+              query: data.hits.length,
               loading: false,
             }));
           } else {
-             window.scrollTo(0, 0);
+            window.scrollTo(0, 0);
             this.setState({
               collection: [...data.hits],
+              query: data.hits.length,
               loading: false,
             });
           }
 
           if (data.hits.length === 0) {
+            this.setState({ collection: [] });
             toast.error('Sorry, no images were found for your request!');
             return Promise.reject(
               new Error('Sorry, no images were found for your request')
             );
           }
         })
-        .catch(error => console.log(error.message));
+        .catch(error => console.log(error.message))
+        .finally(() => {
+          this.setState({ loading: false });
+        });
     }
   }
 
   handleSearch = searchText => {
     this.setState({ searchText });
+
+    this.setState(prevState => {
+      if (prevState.searchText !== this.state.searchText) {
+        return {
+          collection: [],
+          pageNumber: 1,
+        };
+      }
+    });
   };
 
   onLoadMore = () => {
@@ -62,16 +76,19 @@ class App extends Component {
   };
 
   render() {
+    const { collection, query, loading } = this.state;
     return (
       <MainContainer>
         <SearchBar onSubmit={this.handleSearch} />
         {this.state.collection && (
-          <ImageGallery props={this.state.collection} />
+          <ImageGallery
+            collection={collection}
+            query={query}
+            loading={loading}
+            onLoadMore={this.onLoadMore}
+          />
         )}
         <Loader isLoading={this.state.loading} />
-        {this.state.collection.length !== 0 && (
-          <Button onClick={this.onLoadMore} />
-        )}
         <ToastContainer autoClose={3000} />
       </MainContainer>
     );

@@ -1,21 +1,25 @@
 import PropTypes from 'prop-types';
 import { ImageGalleryItem } from 'components/ImageGalleryItem/ImageGalleryItem';
 import { ImageGalleryList } from './ImageGallery.styled';
+import { Button } from 'components/Button/Button';
 
-export const ImageGallery = ({ props }) => {
+export const ImageGallery = ({ collection, query, loading, onLoadMore }) => {
   return (
-    <ImageGalleryList>
-      {props.map(({ webformatURL, largeImageURL, id, tags }) => {
-        return (
-          <ImageGalleryItem
-            key={id}
-            webformatURL={webformatURL}
-            largeImageURL={largeImageURL}
-            tags={tags}
-          />
-        );
-      })}
-    </ImageGalleryList>
+    <>
+      <ImageGalleryList>
+        {collection.map(({ webformatURL, largeImageURL, id, tags }) => {
+          return (
+            <ImageGalleryItem
+              key={id}
+              webformatURL={webformatURL}
+              largeImageURL={largeImageURL}
+              tags={tags}
+            />
+          );
+        })}
+      </ImageGalleryList>
+      {(query === 12 && !loading) && <Button onClick={onLoadMore} />}
+    </>
   );
 };
 

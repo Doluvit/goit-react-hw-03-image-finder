@@ -1,11 +1,11 @@
+import { Component } from 'react';
+import { Modal } from 'components/Modal/Modal';
 import PropTypes from 'prop-types';
 
 import {
   ImageCalleryItemBox,
   ImageGalleryItemImage,
 } from './ImageGalleryItem.styled';
-import { Modal } from 'components/Modal/Modal';
-import { Component } from 'react';
 
 export class ImageGalleryItem extends Component {
   static propTypes = {

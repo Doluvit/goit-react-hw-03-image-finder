@@ -7,7 +7,7 @@ export const LoadButton = styled.button`
   transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
   text-align: center;
   display: block;
-  margin: 0 auto;
+  margin: auto;
   color: #fff;
   border: 0;
   text-decoration: none;
