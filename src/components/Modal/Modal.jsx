@@ -1,13 +1,23 @@
-import { ModalWindow, Overlay } from './Modal.styled';
+import Modal from 'react-modal';
 
-export const Modal = () => {
+Modal.setAppElement('#root');
+
+const customStyles = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+  },
+};
+
+export const ModalWindow = ({ openModal, closeModal, largeImageURL, tags }) => {
+
   return (
-    <>
-      <Overlay>
-        <ModalWindow>
-          <img src="" alt="" />
-        </ModalWindow>
-      </Overlay>
-    </>
+    <Modal isOpen={openModal()} onRequestClose={closeModal()} style={customStyles}>
+      <img src={largeImageURL} alt={tags} />
+    </Modal>
   );
 };

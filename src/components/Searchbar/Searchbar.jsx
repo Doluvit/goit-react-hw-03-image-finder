@@ -27,6 +27,7 @@ class SearchBar extends Component {
     }
     this.props.onSubmit(this.state.value);
     this.setState({ value: '' });
+    window.scrollTo(0, 0);
   };
 
   render() {

@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { ImageGallery } from './ImageGallery/ImageGallery';
@@ -9,10 +9,11 @@ import { getCards } from 'Servises/getCards';
 import { Button } from './Button/Button';
 import { Loader } from './Loader/Loader';
 
+
 class App extends Component {
   state = {
     searchText: '',
-    collection: null,
+    collection: [],
     loading: false,
     pageNumber: 1,
   };
@@ -39,7 +40,10 @@ class App extends Component {
           }
 
           if (data.hits.length === 0) {
-            return Promise.reject(new Error('Sorry'));
+            toast.error('Sorry, no images were found for your request!');
+            return Promise.reject(
+              new Error('Sorry, no images were found for your request')
+            );
           }
         })
         .catch(error => console.log(error.message));
@@ -62,9 +66,11 @@ class App extends Component {
         <SearchBar onSubmit={this.handleSearch} />
         {this.state.collection && (
           <ImageGallery props={this.state.collection} />
-          )}
-          <Loader isLoading={this.state.loading}/>
-        {this.state.collection && <Button onClick={this.onLoadMore} />}
+        )}
+        <Loader isLoading={this.state.loading} />
+        {this.state.collection.length !== 0 && (
+          <Button onClick={this.onLoadMore} />
+        )}
         <ToastContainer autoClose={3000} />
       </MainContainer>
     );
