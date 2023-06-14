@@ -149,7 +149,7 @@ export const App = () => {
       setPageNumber(1);
     }
   };
-
+  
   const onLoadMore = () => {
     setPageNumber(prevPageNumber=> prevPageNumber + 1);
   };
