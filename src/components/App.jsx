@@ -151,10 +151,9 @@ export const App = () => {
   };
 
   const onLoadMore = () => {
-    setPageNumber(pageNumber + 1);
+    setPageNumber(prevPageNumber=> prevPageNumber + 1);
   };
-  console.log(pageNumber);
-
+ 
   return (
     <MainContainer>
       <SearchBar onSubmit={handleSearch} />
